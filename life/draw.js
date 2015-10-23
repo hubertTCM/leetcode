@@ -188,7 +188,13 @@
         context.stroke();
     }
 
-    displayManager.show = function () {
+    displayManager.refresh = function () {
+        var changed = this.universeManager.toNextGeneration();
+        if (!changed) {
+            // game over
+            return false;
+        }
+
         var colors = {};
         colors[state.live] = "green";
         colors[state.dead] = "grey";
@@ -200,20 +206,18 @@
                 context.fillRect(rowIndex * this.cellWidth, columnIndex * this.cellHeight, (rowIndex + 1) * this.cellWidth, (columnIndex + 1) * this.cellHeight);
             }
         }
+        return true;
     }
 
     function reGenerate() {
         console.log("reGenerate");
         var rowCount = parseInt($("#rowCount").val());
         var columnCount = parseInt($("#columnCount").val());
-        var manager = createUniverseManager(rowCount, columnCount);
-        displayManager.initialize(manager);
+        displayManager.initialize(createUniverseManager(rowCount, columnCount));
         var time = 1;
 
         function evolution() {
-            var nextGeneration = manager.toNextGeneration();
-            if (nextGeneration.changed) {
-                displayManager.show();
+            if (displayManager.refresh()) {
                 setTimeout(evolution, time * 1000);
             }
         }
