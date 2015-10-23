@@ -1,3 +1,4 @@
+"use strict";
 (function () {
     var state = { live: "live", dead: "dead" };
     var universeState = {}; // {x, y, state}
@@ -92,6 +93,11 @@
         }
 
         function toNextGeneration() {
+            if (!currentGeneration) {
+                initialize();
+                return { changed: true, state: currentGeneration };
+            }
+
             var nextGneration = [];
 
             var changed = false;
@@ -140,38 +146,64 @@
         };
 
         return {
-            initialize: initialize,
             toNextGeneration: toNextGeneration
         }
     }
 
-    function show(universe) {
+    var displayManager = {
+        cellWidth: 10,
+        cellHeight: 5
+    }
+    displayManager.getContext = function(){
+        var context = $("#universe")[0].getContext("2d");
+        return context;
+    }
+
+    displayManager.initialize = function (rowCount, columnCount) {
+        var context = this.getContext();
+        var width, height;
+        width = this.cellWidth * columnCount;
+        height = this.cellHeight * rowCount;
+        context.canvas.width = width;
+        context.canvas.height = height;
+        // draw grid
+        context.strokeStyle = "#eee";
+        var rowIndex, columnIndex;
+        for (rowIndex = 0; rowIndex < rowCount + 1; ++rowIndex) {
+            context.moveTo(rowIndex * this.cellWidth, 0);
+            context.lineTo(rowIndex * this.cellWidth, height);
+        }
+        for (columnIndex = 0; columnIndex < columnCount + 1; ++columnIndex) {
+            context.moveTo(0, columnIndex * this.cellHeight);
+            context.lineTo(width, columnIndex * this.cellHeight);
+        }
+        context.stroke();
+    }
+
+    displayManager.show = function(universe) {
         console.log("display");
     }
 
     function reGenerate() {
         console.log("reGenerate");
-        var rowCount = $("#rowCount").val();
-        var columnCount = $("#columnCount").val();
+        var rowCount = parseInt($("#rowCount").val());
+        var columnCount = parseInt($("#columnCount").val());
+        displayManager.initialize(rowCount, columnCount);
         var manager = createUniverseManager(rowCount, columnCount);
         var time = 1;
-
-        var universeState = manager.initialize();
-        show(universeState);
-        setTimeout(evolution, time * 1000);
 
         function evolution() {
             var nextGeneration = manager.toNextGeneration();
             if (nextGeneration.changed) {
-                show(nextGeneration.state);
+                displayManager.show(nextGeneration.state);
                 setTimeout(evolution, time * 1000);
             }
         }
-
+        evolution();
     }
 
     $(document).ready(function () {
         $("#create").on("click", reGenerate);
-        reGenerate();
+        //reGenerate();
     });
 })();
