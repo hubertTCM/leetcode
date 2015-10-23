@@ -35,7 +35,7 @@
         }
 
         function getState(rowIndex, columnIndex) {
-            if (!currentGeneration || !currentGeneration.length){
+            if (!currentGeneration || !currentGeneration.length) {
                 return state.dead;
             }
 
@@ -146,6 +146,9 @@
         };
 
         return {
+            getRowCount: getRowCount,
+            getColumnCount: getColumnCount,
+            getState: getState,
             toNextGeneration: toNextGeneration
         }
     }
@@ -154,19 +157,24 @@
         cellWidth: 10,
         cellHeight: 5
     }
-    displayManager.getContext = function(){
+    displayManager.getContext = function () {
         var context = $("#universe")[0].getContext("2d");
         return context;
     }
 
-    displayManager.initialize = function (rowCount, columnCount) {
+    displayManager.initialize = function (universeManager) {
+        this.universeManager = universeManager;
+        var rowCount = universeManager.getRowCount();
+        var columnCount = universeManager.getColumnCount();
+
+        //draw grid
         var context = this.getContext();
         var width, height;
         width = this.cellWidth * columnCount;
         height = this.cellHeight * rowCount;
         context.canvas.width = width;
         context.canvas.height = height;
-        // draw grid
+
         context.strokeStyle = "#eee";
         var rowIndex, columnIndex;
         for (rowIndex = 0; rowIndex < rowCount + 1; ++rowIndex) {
@@ -180,22 +188,32 @@
         context.stroke();
     }
 
-    displayManager.show = function(universe) {
-        console.log("display");
+    displayManager.show = function () {
+        var colors = {};
+        colors[state.live] = "green";
+        colors[state.dead] = "grey";
+        var context = this.getContext();
+        var rowIndex, columnIndex;
+        for (rowIndex = 0; rowIndex < this.universeManager.getRowCount(); ++rowIndex) {
+            for (columnIndex = 0; columnIndex < this.universeManager.getColumnCount(); ++columnIndex) {
+                context.fillStyle = colors[this.universeManager.getState(rowIndex, columnIndex)];
+                context.fillRect(rowIndex * this.cellWidth, columnIndex * this.cellHeight, (rowIndex + 1) * this.cellWidth, (columnIndex + 1) * this.cellHeight);
+            }
+        }
     }
 
     function reGenerate() {
         console.log("reGenerate");
         var rowCount = parseInt($("#rowCount").val());
         var columnCount = parseInt($("#columnCount").val());
-        displayManager.initialize(rowCount, columnCount);
         var manager = createUniverseManager(rowCount, columnCount);
+        displayManager.initialize(manager);
         var time = 1;
 
         function evolution() {
             var nextGeneration = manager.toNextGeneration();
             if (nextGeneration.changed) {
-                displayManager.show(nextGeneration.state);
+                displayManager.show();
                 setTimeout(evolution, time * 1000);
             }
         }
@@ -204,6 +222,6 @@
 
     $(document).ready(function () {
         $("#create").on("click", reGenerate);
-        //reGenerate();
+        reGenerate();
     });
 })();
