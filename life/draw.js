@@ -34,7 +34,7 @@
             }
         }
 
-        function getState(rowIndex, columnIndex) {
+        function getCellState(rowIndex, columnIndex) {
             if (!currentGeneration || !currentGeneration.length) {
                 return state.dead;
             }
@@ -55,7 +55,7 @@
             var direction;
             for (direction in neighborLocationCalculator) {
                 var neighbor = neighborLocationCalculator[direction](location);
-                var neighborState = getState(neighbor.rowIndex, neighbor.columnIndex);
+                var neighborState = getCellState(neighbor.rowIndex, neighbor.columnIndex);
                 if (neighborState == state.live) {
                     liveNeighbors += 1;
                 }
@@ -109,7 +109,7 @@
             for (rowIndex; rowIndex < rowCount; ++rowIndex) {
                 row = []
                 for (columnIndex = 0; columnIndex < columnCount; ++columnIndex) {
-                    currentState = getState(rowIndex, columnIndex);
+                    currentState = getCellState(rowIndex, columnIndex);
                     liveNeighbors = calcuateLiveNeighbors(rowIndex, columnIndex);
                     nextState = getNextGenerationState(currentState, liveNeighbors);
                     row.push(nextState);
@@ -148,7 +148,7 @@
         return {
             getRowCount: getRowCount,
             getColumnCount: getColumnCount,
-            getState: getState,
+            getCellState: getCellState,
             toNextGeneration: toNextGeneration
         }
     }
@@ -202,7 +202,7 @@
         var rowIndex, columnIndex;
         for (rowIndex = 0; rowIndex < this.universeManager.getRowCount(); ++rowIndex) {
             for (columnIndex = 0; columnIndex < this.universeManager.getColumnCount(); ++columnIndex) {
-                context.fillStyle = colors[this.universeManager.getState(rowIndex, columnIndex)];
+                context.fillStyle = colors[this.universeManager.getCellState(rowIndex, columnIndex)];
                 context.fillRect(rowIndex * this.cellWidth, columnIndex * this.cellHeight, (rowIndex + 1) * this.cellWidth, (columnIndex + 1) * this.cellHeight);
             }
         }
