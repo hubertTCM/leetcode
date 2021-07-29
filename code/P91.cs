@@ -1,16 +1,43 @@
 using System;
 
-// Time exceed.
 namespace P91
 {
     public class Solution
     {
         public int NumDecodings(string s)
         {
-            return NumDecodings(s, 0);
+            if (s.Length == 0)
+            {
+                return 0;
+            }
+            int[] result = new int[s.Length + 1];
+            result[0] = 1;
+            // result[i]=result[i-1] + result[i-2]
+            for (var i = 1; i < s.Length + 1; i++)
+            {
+                var endChar = s[i - 1];
+                if (i > 1)
+                {
+                    var previousEndChar = s[i - 2];
+                    if (isValid(previousEndChar, endChar))
+                    {
+                        result[i] += result[i - 2];
+                    }
+                }
+                if (isValid(endChar))
+                {
+                    result[i] += result[i - 1];
+                }
+            }
+            return result[s.Length];
         }
 
-        int NumDecodings(string s, int start)
+        public int NumDecodingsTLE(string s)
+        {
+            return NumDecodingsTLE(s, 0);
+        }
+
+        int NumDecodingsTLE(string s, int start)
         {
             if (start >= s.Length)
             {
@@ -26,7 +53,7 @@ namespace P91
                 return 1;
             }
 
-            int result = NumDecodings(s, start + 1);
+            int result = NumDecodingsTLE(s, start + 1);
             char second = s[start + 1];
             if (isValid(first, second))
             {
@@ -34,7 +61,7 @@ namespace P91
                 {
                     return result + 1;
                 }
-                result += NumDecodings(s, start + 2);
+                result += NumDecodingsTLE(s, start + 2);
             }
             return result;
         }
@@ -64,13 +91,14 @@ namespace P91
         public static void Run()
         {
             var s = new Solution();
-            //Console.WriteLine(s.NumDecodings("111111111111111111111111111111111111111111111"));
+            Console.WriteLine(s.NumDecodings("111111111111111111111111111111111111111111111"));
             Console.WriteLine(s.NumDecodings("1111111111111111111111111111111111111111"));
             Console.WriteLine(s.NumDecodings("12"));
             Console.WriteLine(s.NumDecodings("1116"));
             Console.WriteLine(s.NumDecodings("226"));
             Console.WriteLine(s.NumDecodings("0"));
             Console.WriteLine(s.NumDecodings("06"));
+            Console.WriteLine(s.NumDecodings("10"));
         }
     }
 }
