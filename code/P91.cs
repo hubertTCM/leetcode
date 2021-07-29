@@ -6,6 +6,97 @@ namespace P91
     {
         public int NumDecodings(string s)
         {
+            var cache = new int[s.Length];
+            for (var i = 0; i < cache.Length; i++)
+            {
+                cache[i] = -1;
+            }
+            return NumDecodingsMemo(s, 0, cache);
+        }
+
+        int NumDecodingsMemo(string s, int start, int[] cache)
+        {
+            if (start >= s.Length)
+            {
+                cache[start] = 0;
+                return 0;
+            }
+            if (cache[start] >= 0)
+            {
+                return cache[start];
+            }
+            char first = s[start];
+            if (!isValid(first))
+            {
+                cache[start] = 0;
+                return 0;
+            }
+            if (start == s.Length - 1)
+            {
+                cache[start] = 1;
+                return 1;
+            }
+
+            int result = NumDecodingsMemo(s, start + 1, cache);
+            char second = s[start + 1];
+            if (isValid(first, second))
+            {
+                if (start == s.Length - 2)
+                {
+                    cache[start] = result + 1;
+                    return result + 1;
+                }
+                result += NumDecodingsMemo(s, start + 2, cache);
+            }
+            cache[start] = result;
+            return result;
+        }
+
+        public int NumDecodingsoptimization(string s)
+        {
+            if (s.Length == 0)
+            {
+                return 0;
+            }
+
+            int result = 0;
+            int previous = 1;
+            int beforePrevious = 0;
+            // result[i]=result[i-1] + result[i-2]
+            for (var i = 1; i < s.Length + 1; i++)
+            {
+                result = 0;
+                var endChar = s[i - 1];
+
+                if (isValid(endChar))
+                {
+                    if (i == 1)
+                    {
+                        result = 1;
+                    }
+                    else
+                    {
+                        result += previous;
+                    }
+                }
+
+                if (i > 1)
+                {
+                    var previousEndChar = s[i - 2];
+                    if (isValid(previousEndChar, endChar))
+                    {
+                        result += beforePrevious;
+                    }
+                }
+
+                beforePrevious = previous;
+                previous = result;
+            }
+            return result;
+        }
+
+        public int NumDecodings2(string s)
+        {
             if (s.Length == 0)
             {
                 return 0;
@@ -94,8 +185,8 @@ namespace P91
             Console.WriteLine(s.NumDecodings("111111111111111111111111111111111111111111111"));
             Console.WriteLine(s.NumDecodings("1111111111111111111111111111111111111111"));
             Console.WriteLine(s.NumDecodings("12"));
-            Console.WriteLine(s.NumDecodings("1116"));
             Console.WriteLine(s.NumDecodings("226"));
+            Console.WriteLine(s.NumDecodings("1116"));
             Console.WriteLine(s.NumDecodings("0"));
             Console.WriteLine(s.NumDecodings("06"));
             Console.WriteLine(s.NumDecodings("10"));
