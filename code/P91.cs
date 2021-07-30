@@ -6,7 +6,8 @@ namespace P91
     {
         public int NumDecodings(string s)
         {
-            var result = new int[s.Length];
+            var result = new int[s.Length + 1];
+            result[s.Length] = 1;
             // f[start] = f[start-1] + f[start - 2]
             for (var start = s.Length - 1; start >= 0; start--)
             {
@@ -16,23 +17,15 @@ namespace P91
                     result[start] = 0;
                     continue;
                 }
+                result[start] += result[start + 1];
                 if (start == s.Length - 1)
                 {
-                    result[start] = 1;
                     continue;
                 }
-                result[start] += result[start + 1];
                 var nextChar = s[start + 1];
                 if (isValid(startChar, nextChar))
                 {
-                    if (start == s.Length - 2)
-                    {
-                        result[start] += 1;
-                    }
-                    else
-                    {
-                        result[start] += result[start + 2];
-                    }
+                    result[start] += result[start + 2];
                 }
             }
             return result[0];
