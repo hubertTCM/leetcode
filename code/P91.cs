@@ -14,18 +14,16 @@ namespace P91
                 var startChar = s[start];
                 if (!isValid(startChar))
                 {
-                    result[start] = 0;
                     continue;
                 }
                 result[start] += result[start + 1];
-                if (start == s.Length - 1)
+                if (start < s.Length - 1)
                 {
-                    continue;
-                }
-                var nextChar = s[start + 1];
-                if (isValid(startChar, nextChar))
-                {
-                    result[start] += result[start + 2];
+                    var nextChar = s[start + 1];
+                    if (isValid(startChar, nextChar))
+                    {
+                        result[start] += result[start + 2];
+                    }
                 }
             }
             return result[0];
