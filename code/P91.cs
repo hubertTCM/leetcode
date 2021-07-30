@@ -6,6 +6,40 @@ namespace P91
     {
         public int NumDecodings(string s)
         {
+            var result = new int[s.Length];
+            // f[start] = f[start-1] + f[start - 2]
+            for (var start = s.Length - 1; start >= 0; start--)
+            {
+                var startChar = s[start];
+                if (!isValid(startChar))
+                {
+                    result[start] = 0;
+                    continue;
+                }
+                if (start == s.Length - 1)
+                {
+                    result[start] = 1;
+                    continue;
+                }
+                result[start] += result[start + 1];
+                var nextChar = s[start + 1];
+                if (isValid(startChar, nextChar))
+                {
+                    if (start == s.Length - 2)
+                    {
+                        result[start] += 1;
+                    }
+                    else
+                    {
+                        result[start] += result[start + 2];
+                    }
+                }
+            }
+            return result[0];
+        }
+
+        public int NumDecodingsMemo(string s)
+        {
             var cache = new int[s.Length];
             for (var i = 0; i < cache.Length; i++)
             {
@@ -52,7 +86,7 @@ namespace P91
             return result;
         }
 
-        public int NumDecodingsoptimization(string s)
+        public int NumDecodingsDPOptimization(string s)
         {
             if (s.Length == 0)
             {
@@ -95,7 +129,7 @@ namespace P91
             return result;
         }
 
-        public int NumDecodings2(string s)
+        public int NumDecodingsDP(string s)
         {
             if (s.Length == 0)
             {
