@@ -6,6 +6,37 @@ namespace P91
     {
         public int NumDecodings(string s)
         {
+            var result = 0;
+            var next = 1;
+            var afterNext = 0;
+            // f[start] = f[start-1] + f[start - 2]
+            for (var start = s.Length - 1; start >= 0; start--)
+            {
+                result = 0;
+                var startChar = s[start];
+                if (!isValid(startChar))
+                {
+                    afterNext = next;
+                    next = result;
+                    continue;
+                }
+                result += next;
+                if (start < s.Length - 1)
+                {
+                    var nextChar = s[start + 1];
+                    if (isValid(startChar, nextChar))
+                    {
+                        result += afterNext;
+                    }
+                }
+
+                afterNext = next;
+                next = result;
+            }
+            return result;
+        }
+        public int NumDecodingsDP2(string s)
+        {
             var result = new int[s.Length + 1];
             result[s.Length] = 1;
             // f[start] = f[start-1] + f[start - 2]
@@ -207,6 +238,7 @@ namespace P91
         public static void Run()
         {
             var s = new Solution();
+            Console.WriteLine(s.NumDecodings("2101"));
             Console.WriteLine(s.NumDecodings("111111111111111111111111111111111111111111111"));
             Console.WriteLine(s.NumDecodings("1111111111111111111111111111111111111111"));
             Console.WriteLine(s.NumDecodings("12"));
