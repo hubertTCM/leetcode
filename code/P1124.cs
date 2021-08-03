@@ -1,10 +1,40 @@
 using System;
+using System.Collections.Generic;
 namespace P1124
 {
     public class Solution
     {
-        // wrong
         public int LongestWPI(int[] hours)
+        {
+            int[] total = new int[hours.Length + 1];
+            for (var t = 1; t < total.Length; t++)
+            {
+                var delta = hours[t - 1] > 8 ? 1 : -1;
+                total[t] = total[t - 1] + delta;
+            }
+            Stack<int> stack = new Stack<int>();
+            stack.Push(0);
+            for (int i = 1; i < total.Length; i++)
+            {
+                var top = stack.Peek();
+                if (total[top] > total[i])
+                {
+                    stack.Push(i);
+                }
+            }
+            var result = 0;
+            for (var i = total.Length - 1; i > 0 && stack.Count > 0; i--)
+            {
+                while (stack.Count > 0 && total[stack.Peek()] < total[i])
+                {
+                    var top = stack.Pop();
+                    result = Math.Max(i - top, result);
+                }
+            }
+            return result;
+        }
+        // wrong
+        public int LongestWPIWrong(int[] hours)
         {
             int[] total = new int[hours.Length + 1];
             for (var t = 1; t < total.Length; t++)
@@ -107,9 +137,9 @@ namespace P1124
         public static void Run()
         {
             var s = new Solution();
-            // Console.WriteLine(s.LongestWPI(new int[] { 12, 8, 7, 7, 9, 10, 8, 7, 9, 7, 8, 11 })); // 5
-            // Console.WriteLine(s.LongestWPI(new int[] { 5, 5, 9, 9, 5, 6, 10, 8, 8, 10, 5, 5, 7 })); // 5
-            // Console.WriteLine(s.LongestWPI(new int[] { 12, 8, 7, 7, 9, 10, 8, 7, 9, 7, 8, 11 }));// 5
+            Console.WriteLine(s.LongestWPI(new int[] { 12, 8, 7, 7, 9, 10, 8, 7, 9, 7, 8, 11 })); // 5
+            Console.WriteLine(s.LongestWPI(new int[] { 5, 5, 9, 9, 5, 6, 10, 8, 8, 10, 5, 5, 7 })); // 5
+            Console.WriteLine(s.LongestWPI(new int[] { 12, 8, 7, 7, 9, 10, 8, 7, 9, 7, 8, 11 }));// 5
             Console.WriteLine(s.LongestWPI(new int[] { 10, 5, 9, 7, 9, 9, 5, 5, 7, 10 }));// 7
             Console.WriteLine(s.LongestWPI(new int[] { 13, 4, 2, 5, 0, 6, 0, 10, 5, 12, 5 })); // 3
             Console.WriteLine(s.LongestWPI(new int[] { 8, 7, 7, 8, 6, 11, 12 })); // 3
