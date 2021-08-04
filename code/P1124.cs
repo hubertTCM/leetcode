@@ -4,6 +4,7 @@ namespace P1124
 {
     public class Solution
     {
+        // Monotone Stack
         public int LongestWPI(int[] hours)
         {
             int[] total = new int[hours.Length + 1];

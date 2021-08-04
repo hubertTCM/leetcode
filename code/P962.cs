@@ -5,6 +5,7 @@ namespace P962
 {
     public class Solution
     {
+        // Monotone Stack
         public int MaxWidthRamp(int[] nums)
         {
             Stack<int> stack = new Stack<int>();
