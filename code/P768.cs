@@ -22,17 +22,17 @@ namespace P768
                     shouldReverse = true;
                 }
                 var item = arr[i];
-                var previousChunk = chunks.Peek();
-                if (previousChunk.max <= item)
+                var current = chunks.Peek();
+                if (current.max <= item)
                 {
                     chunks.Push((item, item));
                     continue;
                 }
-                var max = previousChunk.max;
+                var max = current.max;
                 var min = item;
                 while (chunks.Count > 0)
                 {
-                    var current = chunks.Peek();
+                    current = chunks.Peek();
                     min = current.min;
                     if (current.max <= item)
                     {
@@ -47,7 +47,6 @@ namespace P768
                         break;
                     }
                     chunks.Pop();
-                    previousChunk = current;
                 }
                 if (chunks.Count == 0)
                 {
