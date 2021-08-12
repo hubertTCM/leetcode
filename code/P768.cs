@@ -5,7 +5,6 @@ namespace P768
 {
     public class Solution
     {
-        // incorrect
         public int MaxChunksToSorted(int[] arr)
         {
             if (arr.Length < 2)
