@@ -6,7 +6,7 @@ namespace code
     {
         static void Main(string[] args)
         {
-            P316.Test.Run();
+            P402.Test.Run();
             Console.WriteLine("Done!");
         }
     }
