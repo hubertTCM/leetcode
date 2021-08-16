@@ -9,11 +9,27 @@ namespace P901
         List<int> _all = new List<int>();
 
         Stack<(int price, int days)> _stack = new Stack<(int price, int days)>();
+        int _currentIndex = -1;
         public StockSpanner()
         {
+        }
+
+        public int Next(int price)
+        {
+            while (_stack.Count > 0 && _stack.Peek().price <= price)
+            {
+                _stack.Pop();
+            }
+
+            var last = _stack.Count == 0 ? -1 : _stack.Peek().days;
+            _currentIndex += 1;
+            _stack.Push((price, _currentIndex));
+
+            var ans = _currentIndex - last;
+            return ans;
 
         }
-        public int Next(int price)
+        public int Next2(int price)
         {
             var ans = 1;
             {
