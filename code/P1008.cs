@@ -21,8 +21,7 @@ namespace P1008
 
             var val = preorder[from];
             var root = new TreeNode(val);
-            var i = from + 1;
-            for (i = from + 1; i <= to; i++)
+            for (var i = from + 1; i <= to; i++)
             {
                 if (preorder[i] > val)
                 {
