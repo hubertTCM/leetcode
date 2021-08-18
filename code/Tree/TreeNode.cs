@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 namespace Tree
 {
     public class TreeNode
@@ -14,7 +15,7 @@ namespace Tree
         }
     }
 
-    public class TreeBuilder
+    public static class TreeHelper
     {
         public static TreeNode Build(string s)
         {
@@ -50,6 +51,41 @@ namespace Tree
                 }
             }
             return root;
+        }
+
+        public static string Display(this TreeNode root)
+        {
+            var ans = new StringBuilder();
+            ans.Append("[");
+            Queue<TreeNode> nodes = new Queue<TreeNode>();
+            nodes.Enqueue(root);
+            var first = true;
+            while (nodes.Count > 0)
+            {
+                var node = nodes.Dequeue();
+                if (!first)
+                {
+                    ans.Append(", ");
+                }
+
+                if (node != null)
+                {
+                    ans.Append(node.val);
+                    if (node.left == null && node.right == null)
+                    {
+                        continue;
+                    }
+                    nodes.Enqueue(node.left);
+                    nodes.Enqueue(node.right);
+                }
+                else
+                {
+                    ans.Append("null");
+                }
+                first = false;
+            }
+            ans.Append("]");
+            return ans.ToString();
         }
     }
 }

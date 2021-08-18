@@ -32,9 +32,12 @@ namespace P1448
         {
             var s = new Solution();
 
-            Console.WriteLine(s.GoodNodes(TreeBuilder.Build("[3,1,4,3,null,1,5]")));//4
-            Console.WriteLine(s.GoodNodes(TreeBuilder.Build("[3,3,null,4,2]")));//3
-            Console.WriteLine(s.GoodNodes(TreeBuilder.Build("[2,null,4,10,8,null,null,4]"))); //4
+            Console.WriteLine(s.GoodNodes(TreeHelper.Build("[3,1,4,3,null,1,5]")));//4
+            Console.WriteLine(s.GoodNodes(TreeHelper.Build("[3,3,null,4,2]")));//3
+            Console.WriteLine(s.GoodNodes(TreeHelper.Build("[2,null,4,10,8,null,null,4]"))); //4
+
+            var node = TreeHelper.Build("[3,1,4,3,null,1,5]");
+            Console.WriteLine(node.Display());
         }
     }
 }
