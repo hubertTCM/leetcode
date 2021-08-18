@@ -65,7 +65,7 @@ namespace Tree
                 var node = nodes.Dequeue();
                 if (!first)
                 {
-                    ans.Append(", ");
+                    ans.Append(",");
                 }
 
                 if (node != null)
