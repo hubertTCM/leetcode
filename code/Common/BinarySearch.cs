@@ -45,34 +45,40 @@ namespace BinarySearch
                 var source = new int[len];
                 for (var i = 0; i < len; i++)
                 {
-                    var next = start + r.Next(1, 10);
+                    var next = start + r.Next(2, 10);
                     source[i] = next;
                     start = next;
                 }
                 // existing value: 
                 var index = r.Next(0, len - 1);
-                Verify(source, source[index]);
+                Verify(source, source[index], index);
 
                 // not exist
-                Verify(source, source[len - 1] + 100);
+                Verify(source, source[len - 1] + 100, -1);
 
                 // some random check:
-                for (var i = 0; i < Math.Min(len, 100); i++)
+                for (var i = 0; i < Math.Min(len, 1000); i++)
                 {
-                    Verify(source, r.Next(source[0], source[len - 1]));
+                    var targetIndex = i;
+                    var expectIndex = targetIndex < len - 1 ? targetIndex + 1 : -1;
+                    Verify(source, source[targetIndex] + 1, expectIndex);
                 }
             }
         }
 
-        static void Verify(int[] source, int target)
+        static void Verify(int[] source, int target, int expectIndex)
         {
-            var expect = UpperBound(source, target);
+            // var slow = UpperBound(source, target);
+            // if (expectIndex != slow)
+            // {
+            //     Console.WriteLine($"Fialed: source: [{string.Join(",", source)}] target:{target}  expect:{expectIndex} actual:{slow}");
+            // }
+
             var actual = source.UpperBound(target);
-            if (expect != actual)
+            if (expectIndex != actual)
             {
-                Console.WriteLine($"Fialed: source: [{string.Join(",", source)}] target:{target}  expect:{expect} actual:{actual}");
+                Console.WriteLine($"Fialed: source: [{string.Join(",", source)}] target:{target}  expect:{expectIndex} actual:{actual}");
             }
-;
         }
 
         static int UpperBound(int[] source, int target)
