@@ -9,7 +9,58 @@ namespace P1008
     {
         public TreeNode BstFromPreorder(int[] preorder)
         {
-            return Build(preorder, 0, preorder.Length - 1);
+            return BuildBinarySearch(preorder, 0, preorder.Length - 1);
+        }
+
+        // wrong : TBD
+        TreeNode BuildBinarySearch(int[] preorder, int from, int to)
+        {
+            if (from > to)
+            {
+                return null;
+            }
+
+            var val = preorder[from];
+            var root = new TreeNode(val);
+            var left = from + 1; var right = to;
+            var splitIndex = -1;
+            while (left < right)
+            {
+                var mid = (left + right) / 2;
+                if (preorder[mid] < val)
+                {
+                    left = mid + 1;
+                }
+                else
+                {
+                    splitIndex = mid;
+                    right = mid - 1;
+                }
+            }
+            if (splitIndex < 0)
+            {
+                root.left = BuildBinarySearch(preorder, from + 1, to);
+            }
+            else if (splitIndex <= to)
+            {
+                root.left = BuildBinarySearch(preorder, from + 1, splitIndex - 1);
+                root.right = BuildBinarySearch(preorder, splitIndex, to);
+            }
+            else
+            {
+                root.left = BuildBinarySearch(preorder, from + 1, to);
+            }
+            // for (var i = from + 1; i <= to; i++)
+            // {
+            //     if (preorder[i] > val)
+            //     {
+            //         root.left = BuildBinarySearch(preorder, from + 1, i - 1);
+            //         root.right = BuildBinarySearch(preorder, i, to);
+            //         return root;
+            //     }
+            // }
+            // root.left = BuildBinarySearch(preorder, from + 1, to);
+            return root;
         }
 
         TreeNode Build(int[] preorder, int from, int to)
