@@ -9,6 +9,8 @@ namespace P1008
     {
         public TreeNode BstFromPreorder(int[] preorder)
         {
+            Build(preorder, 0, preorder.Length - 1);
+            Console.WriteLine("****");
             return BuildBinarySearch(preorder, 0, preorder.Length - 1);
         }
 
@@ -37,6 +39,7 @@ namespace P1008
                     right = mid - 1;
                 }
             }
+            Console.WriteLine($"[{from + 1}, {to}, {splitIndex}]");
             if (splitIndex < 0)
             {
                 root.left = BuildBinarySearch(preorder, from + 1, to);
@@ -76,11 +79,13 @@ namespace P1008
             {
                 if (preorder[i] > val)
                 {
+                    Console.WriteLine($"[{from + 1}, {to}, {i}]");
                     root.left = Build(preorder, from + 1, i - 1);
                     root.right = Build(preorder, i, to);
                     return root;
                 }
             }
+            Console.WriteLine($"[{from + 1}, {to}, -1]");
             root.left = Build(preorder, from + 1, to);
             return root;
         }
