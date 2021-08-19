@@ -6,7 +6,7 @@ namespace code
     {
         static void Main(string[] args)
         {
-            P1008.Test.Run();
+            BinarySearch.Test.Run();
             Console.WriteLine("Done!");
         }
     }
