@@ -6,8 +6,51 @@ namespace P1574
 {
     public class Solution
     {
-        // non-decreasing
         public int FindLengthOfShortestSubarray(int[] arr)
+        {
+            var left = 0;
+            while (left < arr.Length - 1)
+            {
+                if (arr[left] > arr[left + 1])
+                {
+                    break;
+                }
+                left += 1;
+            }
+            if (left == arr.Length - 1)
+            {
+                return 0;
+            }
+            var right = arr.Length - 1;
+            while (right > 0)
+            {
+                if (arr[right - 1] > arr[right])
+                {
+                    break;
+                }
+                right -= 1;
+            }
+            var min = Math.Min(arr.Length - left - 1, right);
+
+            var i = 0;
+            var j = right;
+            while (i <= left && j <= arr.Length - 1)
+            {
+                if (arr[i] <= arr[j])
+                {
+                    min = Math.Min(min, j - i - 1);
+                    i++;
+                }
+                else
+                {
+                    j++;
+                }
+            }
+
+            return min;
+        }
+        // non-decreasing
+        public int FindLengthOfShortestSubarrayWrong(int[] arr)
         {
             var left = 0;
             var right = arr.Length - 1;
@@ -58,11 +101,11 @@ namespace P1574
         public static void Run()
         {
             var s = new Solution();
-            // Console.WriteLine(s.FindLengthOfShortestSubarray(new int[] { 1, 2, 3, 10, 4, 2, 3, 5 })); // 3
-            // Console.WriteLine(s.FindLengthOfShortestSubarray(new int[] { 5, 4, 3, 2, 1 })); // 4
-            // Console.WriteLine(s.FindLengthOfShortestSubarray(new int[] { 1, 2, 3 })); // 0
-            // Console.WriteLine(s.FindLengthOfShortestSubarray(new int[] { 1 })); // 0
-            Console.WriteLine(s.FindLengthOfShortestSubarray(new int[] { 1, 3, 2, 4 })); // 3
+            Console.WriteLine(s.FindLengthOfShortestSubarray(new int[] { 1, 2, 3, 10, 4, 2, 3, 5 })); // 3
+            Console.WriteLine(s.FindLengthOfShortestSubarray(new int[] { 5, 4, 3, 2, 1 })); // 4
+            Console.WriteLine(s.FindLengthOfShortestSubarray(new int[] { 1, 2, 3 })); // 0
+            Console.WriteLine(s.FindLengthOfShortestSubarray(new int[] { 1 })); // 0
+            Console.WriteLine(s.FindLengthOfShortestSubarray(new int[] { 1, 3, 2, 4 })); // 1
         }
     }
 }
