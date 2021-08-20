@@ -86,8 +86,7 @@ namespace BinarySearch
                 for (var i = 0; i < Math.Min(len, 1000); i++)
                 {
                     var targetIndex = i;
-                    var expectIndex = targetIndex < len - 1 ? targetIndex + 1 : -1;
-                    VerifyUpperBound(source, source[targetIndex] + 1, expectIndex);
+                    VerifyUpperBound(source, source[targetIndex] - 1, targetIndex);
                     VerifyLowerBound(source, source[targetIndex] + 1, targetIndex);
                 }
             }
