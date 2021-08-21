@@ -7,7 +7,7 @@ namespace code
         static void Main(string[] args)
         {
             // BinarySearch.Test.Run();
-            P1339.Test.Run();
+            P1944.Test.Run();
             Console.WriteLine("Done!");
         }
     }
