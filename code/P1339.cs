@@ -7,7 +7,43 @@ namespace P1339
 {
     public class Solution
     {
+
         public int MaxProduct(TreeNode root)
+        {
+            var cache = new Dictionary<TreeNode, int>();
+            CalculateTotal(root, cache);
+            long closest = 0L;
+            var queue = new Queue<TreeNode>();
+            var total = cache[root];
+            queue.Enqueue(root);
+            while (queue.Count > 0)
+            {
+                var node = queue.Dequeue();
+                if (node.left != null)
+                {
+                    queue.Enqueue(node.left);
+                    var temp = cache[node.left];
+                    if (Math.Abs(temp * 2 - total) < Math.Abs(closest * 2 - total))
+                    {
+                        closest = temp;
+                    }
+                }
+                if (node.right != null)
+                {
+                    queue.Enqueue(node.right);
+                    var temp = cache[node.right];
+                    if (Math.Abs(temp * 2 - total) < Math.Abs(closest * 2 - total))
+                    {
+                        closest = temp;
+                    }
+                }
+            }
+            var mode = 1000000007;
+            return Convert.ToInt32(((closest % mode) * ((total - closest) % mode)) % mode);
+        }
+
+        // Maybe overflow?
+        public int MaxProductIncorrect(TreeNode root)
         {
             var cache = new Dictionary<TreeNode, int>();
             CalculateTotal(root, cache);
@@ -31,7 +67,7 @@ namespace P1339
                     max = Math.Max(max, (total - temp) * temp);
                 }
             }
-            return Convert.ToInt32(max % (1000000000 + 7));
+            return Convert.ToInt32(max % (1000000007));
         }
 
         int CalculateTotal(TreeNode root, Dictionary<TreeNode, int> result)
