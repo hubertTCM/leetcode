@@ -7,7 +7,7 @@ namespace code
         static void Main(string[] args)
         {
             // BinarySearch.Test.Run();
-            P1673.Test.Run();
+            P1793.Test.Run();
             Console.WriteLine("Done!");
         }
     }
