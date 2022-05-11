@@ -14,11 +14,6 @@ namespace SlidingPuzzle
             return _board[position.Row, position.Column];
         }
 
-        public void SetValue(Position position, int vlaue)
-        {
-            _board[position.Row, position.Column] = vlaue;
-        }
-
         public int RowCount
         {
             get; private set;
@@ -32,6 +27,21 @@ namespace SlidingPuzzle
         public Position BlankPosition
         {
             get; private set;
+        }
+
+        public MoveRecord Move(Position from)
+        {
+            // TODO: validate
+            var value = GetValue(from);
+            SetValue(BlankPosition, value);
+            var result = new MoveRecord(from, BlankPosition, value);
+            BlankPosition = from;
+            return result;
+        }
+
+        void SetValue(Position position, int value)
+        {
+            _board[position.Row, position.Column] = value;
         }
 
         void Init()
