@@ -13,32 +13,27 @@ namespace P221
             for (var row = 0; row < matrix.Length; row++)
             {
                 var stack = new Stack<int>();
-                var maxHeight = row + 1;
 
-                for (var col = 0; col < matrix[row].Length && ans < maxHeight * maxHeight; col++)
+                for (var col = 0; col < matrix[row].Length; col++)
                 {
                     heights[col] = matrix[row][col] == '0' ? 0 : heights[col] + 1;
 
                     // keep the stack increase, so the previous item in stack is the most left item lower than mine
                     while (stack.Count > 0 && heights[stack.Peek()] > heights[col])
                     {
-                        var height = Math.Min(heights[stack.Pop()], maxHeight);
+                        var height = heights[stack.Pop()];
                         var left = stack.Count == 0 ? 0 : stack.Peek() + 1;
                         var right = col - 1;
                         var width = right - left + 1;
                         var length = Math.Min(width, height);
                         ans = Math.Max(ans, length * length);
-                        if (ans == maxHeight * maxHeight)
-                        {
-                            break;
-                        }
                     }
                     stack.Push(col);
                 }
 
-                while (ans < maxHeight * maxHeight && stack.Count > 0)
+                while (stack.Count > 0)
                 {
-                    var height = Math.Min(heights[stack.Pop()], maxHeight);
+                    var height = heights[stack.Pop()];
                     var left = stack.Count == 0 ? 0 : stack.Peek() + 1;
                     var right = matrix[row].Length - 1;
                     var width = right - left + 1;
