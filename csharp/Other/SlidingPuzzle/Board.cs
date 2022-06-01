@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+
 namespace SlidingPuzzle
 {
     public class Board
@@ -31,7 +34,12 @@ namespace SlidingPuzzle
 
         public MoveRecord Move(Position from)
         {
-            // TODO: validate
+            var neighbors = from.Neighbors;
+            var valid = Array.IndexOf(from.Neighbors, BlankPosition) >= 0;
+            if (!valid)
+            {
+                throw new InvalidOperationException($"Cannot move item from Position [{from.Row}, {from.Column}] to [{BlankPosition.Row}, {BlankPosition.Column}]");
+            }
             var value = GetValue(from);
             SetValue(BlankPosition, value);
             var result = new MoveRecord(from, BlankPosition, value);
