@@ -34,6 +34,10 @@ namespace SlidingPuzzle
 
         public MoveRecord Move(Position from)
         {
+            if (from.Row < 0 || from.Row >= RowCount ||
+                 from.Column < 0 || from.Column >= ColumnCount){
+                throw new InvalidOperationException($"Invalid position. [{from.Row}, {from.Column}]");
+            }
             var neighbors = from.Neighbors;
             var valid = Array.IndexOf(from.Neighbors, BlankPosition) >= 0;
             if (!valid)
