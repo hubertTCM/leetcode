@@ -1,5 +1,6 @@
 {
   "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "search.exclude": {
     "**/node_modules": true,
     "**/bower_components": true,
@@ -25,6 +26,9 @@
     "{based_on_style: chromium, indent_width: 20}"
   ],
   "python.formatting.blackArgs": ["--line-length", "100"],
+  "[csharp]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
+  },
   "[markdown]": {
     "files.trimTrailingWhitespace": false,
     "editor.trimAutoWhitespace": false,
