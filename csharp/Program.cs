@@ -8,8 +8,9 @@ namespace code
         {
             // BinarySearch.Test.Run();
             //P907.Test.Run();
-            NumberCombination.Test.Run();
+            //NumberCombination.Test.Run();
             P221.Test.Run();
+            P925.Test.Run();
             Console.WriteLine("Done!");
         }
     }
